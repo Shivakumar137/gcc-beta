@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Discord from "./components/discord";
 import Uses from "./components/uses";
 

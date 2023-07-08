@@ -4,130 +4,117 @@ import { Formik, Form, useField } from "formik";
 import * as Yup from "yup";
 
 const MyTextInput = ({ label, ...props }) => {
-  // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
-  // which we can spread on <input>. We can use field meta to show an error
-  // message if the field is invalid and it has been touched (i.e. visited)
   const [field, meta] = useField(props);
   return (
-    <>
-      <label htmlFor={props.id || props.name}>{label}</label>
-      <input className="text-input" {...field} {...props} />
-      {meta.touched && meta.error ? (
-        <div className="error">{meta.error}</div>
-      ) : null}
-    </>
-  );
-};
-
-const MyCheckbox = ({ children, ...props }) => {
-  // React treats radios and checkbox inputs differently from other input types: select and textarea.
-  // Formik does this too! When you specify `type` to useField(), it will
-  // return the correct bag of props for you -- a `checked` prop will be included
-  // in `field` alongside `name`, `value`, `onChange`, and `onBlur`
-  const [field, meta] = useField({ ...props, type: "checkbox" });
-  return (
-    <div>
-      <label className="checkbox-input">
-        <input type="checkbox" {...field} {...props} />
-        {children}
+    <div className="m-6 w-96">
+      <label
+        htmlFor={props.id || props.name}
+        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >
+        {label}
       </label>
+      <input
+        className="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        {...field}
+        {...props}
+      />
       {meta.touched && meta.error ? (
-        <div className="error">{meta.error}</div>
+        <div className="error text-red-700">{meta.error}</div>
       ) : null}
     </div>
   );
 };
 
-const MySelect = ({ label, ...props }) => {
-  const [field, meta] = useField(props);
-  return (
-    <div>
-      <label htmlFor={props.id || props.name}>{label}</label>
-      <select {...field} {...props} />
-      {meta.touched && meta.error ? (
-        <div className="error">{meta.error}</div>
-      ) : null}
-    </div>
-  );
-};
-
-// And now we can use these
 export default function SignupForm() {
   return (
-    <>
-      <h1>Subscribe!</h1>
+    <section className="flex flex-row justify-center justify-items-center">
       <Formik
         initialValues={{
-          firstName: "",
-          lastName: "",
+          userId: "",
+          userName: "",
           email: "",
-          acceptedTerms: false, // added for our checkbox
-          jobType: "", // added for our select
+          password: "",
+          confirmPassword: "",
         }}
         validationSchema={Yup.object({
-          firstName: Yup.string()
-            .max(15, "Must be 15 characters or less")
-            .required("Required"),
-          lastName: Yup.string()
+          userId: Yup.string()
             .max(20, "Must be 20 characters or less")
+            .min(4, "Must be 4 characters or more")
+            .required("Required"),
+          userName: Yup.string()
+            .max(25, "Must be 25 characters or less")
             .required("Required"),
           email: Yup.string()
             .email("Invalid email address")
             .required("Required"),
-          acceptedTerms: Yup.boolean()
-            .required("Required")
-            .oneOf([true], "You must accept the terms and conditions."),
-          jobType: Yup.string()
-            .oneOf(
-              ["designer", "development", "product", "other"],
-              "Invalid Job Type"
-            )
+          password: Yup.string()
+            .min(5, "Must be of length 8 or more")
+            .max(25, "Please keep it short don't waste resources on password")
             .required("Required"),
+          confirmPassword: Yup.string().required("Required"),
         })}
         onSubmit={(values, { setSubmitting }) => {
           setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
+            alert("successfully submitted");
             setSubmitting(false);
           }, 400);
         }}
+        className="flex justify-center"
       >
         <Form>
           <MyTextInput
-            label="First Name"
-            name="firstName"
+            label="User Id"
+            name="userId"
             type="text"
-            placeholder="Jane"
+            placeholder="you are an early user create a unique userid"
           />
 
           <MyTextInput
-            label="Last Name"
-            name="lastName"
+            label="User Name"
+            name="userName"
             type="text"
-            placeholder="Doe"
+            placeholder="Shiva Kumar"
           />
 
           <MyTextInput
             label="Email Address"
             name="email"
             type="email"
-            placeholder="jane@formik.com"
+            placeholder="abc@gmail.com"
           />
 
-          <MySelect label="Job Type" name="jobType">
-            <option value="">Select a job type</option>
-            <option value="designer">Designer</option>
-            <option value="development">Developer</option>
-            <option value="product">Product Manager</option>
-            <option value="other">Other</option>
-          </MySelect>
+          <MyTextInput
+            label="Password"
+            name="password"
+            type="text"
+            placeholder="••••••••"
+          />
 
-          <MyCheckbox name="acceptedTerms">
-            I accept the terms and conditions
-          </MyCheckbox>
+          <MyTextInput
+            label="Confirm Password"
+            name="confirmPassword"
+            type="text"
+            placeholder="••••••••"
+          />
 
-          <button type="submit">Submit</button>
+          <button
+            type="submit"
+            className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+          >
+            Create an account
+          </button>
+
+          <p className="text-sm m-4 font-light text-gray-500 dark:text-gray-400">
+            Already have an account?{" "}
+            <a
+              href="../login"
+              className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+            >
+              Login here
+            </a>
+          </p>
         </Form>
       </Formik>
-    </>
+    </section>
   );
 }

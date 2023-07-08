@@ -1,4 +1,4 @@
-import { SignupForm } from "./components/formik.js";
+import SignupForm from "./components/formik.js";
 export default function Signup() {
   return (
     <>
