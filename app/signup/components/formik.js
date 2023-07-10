@@ -9,12 +9,12 @@ const MyTextInput = ({ label, ...props }) => {
     <div className="m-6 w-96">
       <label
         htmlFor={props.id || props.name}
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        className="block mb-2 text-sm font-medium text-white"
       >
         {label}
       </label>
       <input
-        className="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="border bg-pureblack rounded-lg block w-full p-2.5 hover:border-fuchsia-50"
         {...field}
         {...props}
       />
@@ -27,7 +27,10 @@ const MyTextInput = ({ label, ...props }) => {
 
 export default function SignupForm() {
   return (
-    <section className="flex flex-row justify-center justify-items-center">
+    <section className="flex flex-row justify-center m-16">
+      <div className="flex items-center mr-36 mb-16 text-2xl font-semibold text-white">
+        Sign Up to unlock more features
+      </div>
       <Formik
         initialValues={{
           userId: "",
@@ -48,7 +51,7 @@ export default function SignupForm() {
             .email("Invalid email address")
             .required("Required"),
           password: Yup.string()
-            .min(5, "Must be of length 8 or more")
+            .min(8, "Must be of length 8 or more")
             .max(25, "Please keep it short don't waste resources on password")
             .required("Required"),
           confirmPassword: Yup.string().required("Required"),
@@ -59,7 +62,6 @@ export default function SignupForm() {
             setSubmitting(false);
           }, 400);
         }}
-        className="flex justify-center"
       >
         <Form>
           <MyTextInput
@@ -86,7 +88,7 @@ export default function SignupForm() {
           <MyTextInput
             label="Password"
             name="password"
-            type="text"
+            type="password"
             placeholder="••••••••"
           />
 
@@ -99,7 +101,7 @@ export default function SignupForm() {
 
           <button
             type="submit"
-            className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            className="w-full text-white font-medium rounded-lg text-sm px-4 py-2.5 text-center bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-cyan-500 hover:to-violet-500"
           >
             Create an account
           </button>
